@@ -64,16 +64,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {group.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={pathname === item.url}>
-                      <Link href={item.url}>
-                        <item.icon />
-                        {item.title}
-                      </Link>
-                    </SidebarMenuButton>
+                {group.items.map((item) => {
+                  const isActive = item.url === "/app" 
+                    ? pathname === "/app" 
+                    : pathname.startsWith(item.url)
+
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <Link href={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))}
+                )})}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

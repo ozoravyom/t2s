@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -21,10 +22,9 @@ export interface BreadcrumbPath {
   label: string
   href: string
   /** 
-   * 'always' - Selalu muncul di bar
-   * 'tablet' - Muncul di bar mulai layar tablet (sm)
-   * 'desktop' - Muncul di bar mulai layar desktop (md)
-   * Jika dikosongkan, hanya akan muncul di dropdown.
+   * 'always' - Visible on all screens
+   * 'tablet' - Visible on tablet and desktop
+   * 'desktop' - Visible only on desktop
    */
   visibility?: 'always' | 'tablet' | 'desktop'
 }
@@ -44,16 +44,14 @@ export function AppBreadcrumb({ paths, currentLabel }: AppBreadcrumbProps) {
     }
   }
 
-  // Logika visibilitas ikon "..."
   const getEllipsisVisibilityClass = () => {
     if (paths.length === 0) return "hidden"
     
-    // Cek apakah ada item yang "Hanya di Dropdown" atau tersembunyi di breakpoint tertentu
     const hasHiddenOnDesktop = paths.some(p => !p.visibility)
     const hasHiddenOnTablet = paths.some(p => !p.visibility || p.visibility === 'desktop')
     const hasHiddenOnMobile = paths.some(p => p.visibility !== 'always')
 
-    let classes = "flex" // default visible
+    let classes = "flex"
     if (!hasHiddenOnMobile) classes += " hidden"
     if (!hasHiddenOnTablet) classes += " sm:hidden"
     if (!hasHiddenOnDesktop) classes += " md:hidden"
@@ -62,9 +60,9 @@ export function AppBreadcrumb({ paths, currentLabel }: AppBreadcrumbProps) {
   }
 
   return (
-    <Breadcrumb aria-label="Breadcrumb navigation">
+    <Breadcrumb>
       <BreadcrumbList>
-        {/* Render Jalur Statis */}
+        {/* Render visible path segments */}
         {paths.map((path) => (
           <React.Fragment key={path.href}>
             <BreadcrumbItem className={getVisibilityClass(path.visibility)}>
@@ -76,39 +74,37 @@ export function AppBreadcrumb({ paths, currentLabel }: AppBreadcrumbProps) {
           </React.Fragment>
         ))}
 
-        {/* Dropdown Ellipsis */}
+        {/* Dropdown Ellipsis matching user's demo exactly */}
         {paths.length > 0 && (
           <>
             <BreadcrumbItem className={getEllipsisVisibilityClass()}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button 
-                    size="icon" 
-                    variant="ghost" 
-                    className="h-8 w-8"
-                  >
+                  <Button size="icon-sm" variant="ghost">
                     <BreadcrumbEllipsis />
-                    <span className="sr-only">Buka menu navigasi</span>
+                    <span className="sr-only">Toggle menu</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  {paths.map((item) => (
-                    <DropdownMenuItem 
-                      key={item.href} 
-                      asChild
-                      className={
-                        item.visibility === 'always' 
-                          ? "hidden" 
-                          : item.visibility === 'tablet' 
-                            ? "sm:hidden" 
-                            : item.visibility === 'desktop' 
-                              ? "md:hidden" 
-                              : ""
-                      }
-                    >
-                      <Link href={item.href}>{item.label}</Link>
-                    </DropdownMenuItem>
-                  ))}
+                <DropdownMenuContent align="start">
+                  <DropdownMenuGroup>
+                    {paths.map((item) => (
+                      <DropdownMenuItem 
+                        key={item.href} 
+                        asChild
+                        className={
+                          item.visibility === 'always' 
+                            ? "hidden" 
+                            : item.visibility === 'tablet' 
+                              ? "sm:hidden" 
+                              : item.visibility === 'desktop' 
+                                ? "md:hidden" 
+                                : ""
+                        }
+                      >
+                        <Link href={item.href}>{item.label}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             </BreadcrumbItem>
@@ -116,14 +112,9 @@ export function AppBreadcrumb({ paths, currentLabel }: AppBreadcrumbProps) {
           </>
         )}
 
-        {/* Halaman Aktif */}
+        {/* Current Active Page */}
         <BreadcrumbItem>
-          <BreadcrumbPage 
-            className="max-w-[140px] truncate font-semibold sm:max-w-[240px] md:max-w-none text-foreground"
-            title={currentLabel}
-          >
-            {currentLabel}
-          </BreadcrumbPage>
+          <BreadcrumbPage>{currentLabel}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
