@@ -7,7 +7,14 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Sun,
+  Moon,
+  Monitor,
+  Palette,
+  Check,
+  LifeBuoy,
 } from "lucide-react"
+import { useTheme } from "next-themes"
 
 import {
   Avatar,
@@ -22,6 +29,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
@@ -40,6 +53,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { setTheme, theme } = useTheme()
 
   return (
     <SidebarMenu>
@@ -92,13 +106,36 @@ export function NavUser({
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Palette />
+                  Theme
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                    <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+                      <DropdownMenuRadioItem value="light">
+                        <Sun />
+                        Light
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem value="dark">
+                        <Moon />
+                        Dark
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem value="system">
+                        <Monitor />
+                        System
+                      </DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+                <LifeBuoy />
+                Help
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
