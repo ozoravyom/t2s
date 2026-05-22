@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Play, Pause, Loader2 } from "lucide-react"
-import { toast } from "sonner"
+import { Play, Pause } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Spinner } from "@/components/ui/spinner"
 import { Slider } from "@/components/ui/slider"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import {
@@ -55,14 +55,13 @@ export function StudioControls() {
       if (prev) return prev
 
       const promise = new Promise((resolve) => setTimeout(resolve, 2000))
-      toast.promise(promise, {
-        loading: "Generating high-fidelity neural audio...",
-        success: () => {
+      promise
+        .then(() => {
           setIsGenerating(false)
-          return "Audio generated successfully!"
-        },
-        error: "Failed to generate audio.",
-      })
+        })
+        .catch(() => {
+          setIsGenerating(false)
+        })
 
       return true
     })
@@ -185,7 +184,7 @@ export function StudioControls() {
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="animate-spin" />
+                  <Spinner />
                   Generating
                 </>
               ) : (
