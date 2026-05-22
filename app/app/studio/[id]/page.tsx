@@ -38,7 +38,7 @@ export default async function Page({ params }: PageProps) {
   const project = await getProject(id)
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <div className="flex h-svh w-full flex-col overflow-hidden">
       <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
