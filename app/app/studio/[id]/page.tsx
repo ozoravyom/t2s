@@ -3,6 +3,13 @@ import { AppBreadcrumb } from "@/components/app-breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Metadata } from "next"
+import { Mic, User } from "lucide-react"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -57,7 +64,56 @@ export default async function Page({ params }: PageProps) {
         </div>
         <Button>Export</Button>
       </header>
-      <div className="flex flex-1 items-center justify-center"></div>
+      <div className="flex flex-1 overflow-hidden">
+        {/* Kolom Kiri (Editor + Controls) */}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          {/* Section 1: Editor */}
+          <section 
+            className="flex-1 p-4" 
+            aria-label="Editor"
+          >
+            <div className="flex h-full w-full flex-col">
+              <InputGroup className="flex-1">
+                <InputGroupTextarea
+                  id="textarea-code-32"
+                  placeholder="Masukkan teks di sini..."
+                  className="h-full min-h-0 flex-1"
+                />
+                <InputGroupAddon align="block-start" className="border-b">
+                  <InputGroupButton variant="outline" size="sm" className="gap-2">
+                    <User />
+                    Speaker 1 - Zephyr
+                  </InputGroupButton>
+                  <InputGroupButton variant="outline" size="icon-sm" className="ml-auto">
+                    <Mic />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
+          </section>
+
+          {/* Section 2: Controls & Results */}
+          <section 
+            className="border-t p-4" 
+            aria-label="Controls"
+          >
+            <div className="flex flex-col gap-4">
+              {/* Tempat untuk Audio Player nanti */}
+              <div className="flex justify-end">
+                <Button>Generate</Button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Settings/Config (Kanan) */}
+        <aside 
+          className="hidden w-80 border-l overflow-y-auto lg:block" 
+          aria-label="Project settings"
+        >
+          {/* Konten Settings di sini */}
+        </aside>
+      </div>
     </>
   )
 }
