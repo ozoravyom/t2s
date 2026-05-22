@@ -25,25 +25,23 @@ export function StudioEditor() {
     { id: "block-1", text: "", speaker: "Speaker 1 - Zephyr" }
   ])
 
+  const [lastAddedId, setLastAddedId] = React.useState<string | null>(null)
   const bottomRef = React.useRef<HTMLDivElement>(null)
-  const prevBlocksCount = React.useRef(blocks.length)
 
   React.useEffect(() => {
-    if (blocks.length > prevBlocksCount.current) {
-      const lastBlock = blocks[blocks.length - 1]
-      if (lastBlock) {
-        const timer = setTimeout(() => {
-          const textarea = document.getElementById(`textarea-composer-${lastBlock.id}`)
-          if (textarea) {
-            textarea.focus({ preventScroll: true })
-          }
-          bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-        }, 50)
-        return () => clearTimeout(timer)
+    if (!lastAddedId) return
+
+    const timer = setTimeout(() => {
+      const textarea = document.getElementById(`textarea-composer-${lastAddedId}`)
+      if (textarea) {
+        textarea.focus({ preventScroll: true })
       }
-    }
-    prevBlocksCount.current = blocks.length
-  }, [blocks.length])
+      bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      setLastAddedId(null)
+    }, 50)
+
+    return () => clearTimeout(timer)
+  }, [lastAddedId])
 
   const addSpeechBlock = () => {
     const lastBlock = blocks[blocks.length - 1]
@@ -51,14 +49,16 @@ export function StudioEditor() {
       ? "Speaker 2 - Puck" 
       : "Speaker 1 - Zephyr"
     
+    const newId = `block-${Date.now()}`
     setBlocks([
       ...blocks,
       {
-        id: `block-${Date.now()}`,
+        id: newId,
         text: "",
         speaker: nextSpeaker
       }
     ])
+    setLastAddedId(newId)
   }
 
   const deleteSpeechBlock = (id: string) => {
