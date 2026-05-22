@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+      <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur-md">
         <SidebarTrigger className="-ml-1" />
         <Separator
           orientation="vertical"

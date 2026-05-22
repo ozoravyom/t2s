@@ -17,6 +17,25 @@ async function getProject(id: string) {
     "3": "Project Gamma",
     "4": "Project Delta",
     "5": "Project Epsilon",
+    "6": "Project Zeta",
+    "7": "Project Eta",
+    "8": "Project Theta",
+    "9": "Project Iota",
+    "10": "Project Kappa",
+    "11": "Project Lambda",
+    "12": "Project Mu",
+    "13": "Project Nu",
+    "14": "Project Xi",
+    "15": "Project Omicron",
+    "16": "Project Pi",
+    "17": "Project Rho",
+    "18": "Project Sigma",
+    "19": "Project Tau",
+    "20": "Project Upsilon",
+    "21": "Project Phi",
+    "22": "Project Chi",
+    "23": "Project Psi",
+    "24": "Project Omega",
   }
   
   return {
@@ -39,7 +58,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="flex h-svh w-full flex-col overflow-hidden">
-      <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
+      <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
           <Separator

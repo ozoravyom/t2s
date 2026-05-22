@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import TextareaAutosize from "react-textarea-autosize"
-import { Mic, User, PanelRight, Plus, X } from "lucide-react"
+import { Mic, User, Plus, X, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -99,7 +99,7 @@ export function StudioEditor() {
               variant="ghost" 
               size="icon"
             >
-              <PanelRight />
+              <Settings />
             </Button>
           </CollapsibleTrigger>
         </div>
