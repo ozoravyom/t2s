@@ -7,12 +7,11 @@ import { Editor } from "./_components/editor/Editor"
 import { Controls } from "./_components/layout/Controls"
 import { Sidebar } from "./_components/layout/Sidebar"
 import { Collapsible } from "@/components/ui/collapsible"
+import { getProjectById } from "../_data/projects"
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
-
-import { getProjectById } from "../_data/projects"
 
 // In a real app, you would fetch this from an API or database
 async function getProject(id: string) {
