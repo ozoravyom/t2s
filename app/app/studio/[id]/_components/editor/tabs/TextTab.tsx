@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { User, Mic } from "lucide-react"
 import {
   InputGroup,
@@ -9,12 +8,15 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group"
 import { TabsContent } from "@/components/ui/tabs"
+import { useSpeaker } from "../../layout/SpeakerProvider"
 
 /**
  * TextTab Component
  * Renders the simplified text editor view.
  */
 export function TextTab() {
+  const { speaker1 } = useSpeaker()
+
   return (
     <TabsContent value="text" className="flex flex-1 flex-col outline-none">
       <InputGroup className="flex-1 group/input-group">
@@ -26,7 +28,7 @@ export function TextTab() {
         <InputGroupAddon align="block-start" className="border-b">
           <InputGroupButton variant="outline" size="sm">
             <User />
-            Speaker 1 - Zephyr
+            Speaker 1 - {speaker1.voice}
           </InputGroupButton>
           <InputGroupButton 
             variant="outline" 

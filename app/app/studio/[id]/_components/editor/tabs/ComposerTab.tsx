@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState, useEffect, useRef } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 import { User, Mic, X, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -11,30 +11,22 @@ import {
   InputGroupButton,
 } from "@/components/ui/input-group"
 import { TabsContent } from "@/components/ui/tabs"
+import { useSpeaker, SpeechBlock } from "../../layout/SpeakerProvider"
 
-/**
- * Types for the Composer blocks
- */
-export interface SpeechBlock {
-  id: string
-  text: string
-  speaker: "Speaker 1 - Zephyr" | "Speaker 2 - Puck"
-}
+export type { SpeechBlock }
 
 /**
  * ComposerTab Component
  * Renders an interactive list of speech blocks that can be added or removed.
  */
 export function ComposerTab() {
-  const [blocks, setBlocks] = React.useState<SpeechBlock[]>([
-    { id: "block-1", text: "", speaker: "Speaker 1 - Zephyr" }
-  ])
+  const { blocks, setBlocks, speaker1, speaker2 } = useSpeaker()
 
-  const [lastAddedId, setLastAddedId] = React.useState<string | null>(null)
-  const bottomRef = React.useRef<HTMLDivElement>(null)
+  const [lastAddedId, setLastAddedId] = useState<string | null>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
 
   // Auto-focus and scroll when a new block is added
-  React.useEffect(() => {
+  useEffect(() => {
     if (!lastAddedId) return
 
     const timer = setTimeout(() => {
@@ -51,9 +43,9 @@ export function ComposerTab() {
 
   const addSpeechBlock = () => {
     const lastBlock = blocks[blocks.length - 1]
-    const nextSpeaker = lastBlock?.speaker === "Speaker 1 - Zephyr" 
-      ? "Speaker 2 - Puck" 
-      : "Speaker 1 - Zephyr"
+    const nextSpeaker = lastBlock?.speaker === "Speaker 1" 
+      ? "Speaker 2" 
+      : "Speaker 1"
     
     const newId = `block-${Date.now()}`
     setBlocks([
@@ -71,6 +63,13 @@ export function ComposerTab() {
     if (blocks.length > 1) {
       setBlocks(blocks.filter(block => block.id !== id))
     }
+  }
+
+  const toggleSpeaker = (id: string) => {
+    setBlocks(blocks.map(block => block.id === id ? {
+      ...block,
+      speaker: block.speaker === "Speaker 1" ? "Speaker 2" : "Speaker 1"
+    } : block))
   }
 
   const handleTextChange = (id: string, text: string) => {
@@ -97,9 +96,12 @@ export function ComposerTab() {
             <InputGroupButton 
               variant="outline" 
               size="sm"
+              onClick={() => toggleSpeaker(block.id)}
             >
               <User />
-              {block.speaker}
+              {block.speaker === "Speaker 1" 
+                ? `Speaker 1 - ${speaker1.voice}` 
+                : `Speaker 2 - ${speaker2.voice}`}
             </InputGroupButton>
             <InputGroupButton 
               variant="outline" 

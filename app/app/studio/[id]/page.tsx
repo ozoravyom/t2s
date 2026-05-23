@@ -7,7 +7,8 @@ import { Editor } from "./_components/editor/Editor"
 import { Controls } from "./_components/layout/Controls"
 import { Sidebar } from "./_components/layout/Sidebar"
 import { Collapsible } from "@/components/ui/collapsible"
-import { getProjectById } from "../_data/projects"
+import { getProjectById } from "@/data/projects"
+import { SpeakerProvider } from "./_components/layout/SpeakerProvider"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -55,13 +56,15 @@ export default async function Page({ params }: PageProps) {
         <Button>Export</Button>
       </header>
       
-      <Collapsible defaultOpen className="flex flex-1 overflow-hidden">
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <Editor />
-          <Controls />
-        </div>
-        <Sidebar />
-      </Collapsible>
+      <SpeakerProvider>
+        <Collapsible defaultOpen className="flex flex-1 overflow-hidden">
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <Editor />
+            <Controls />
+          </div>
+          <Sidebar />
+        </Collapsible>
+      </SpeakerProvider>
     </div>
   )
 }

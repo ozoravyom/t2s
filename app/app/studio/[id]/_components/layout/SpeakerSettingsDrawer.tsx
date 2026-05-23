@@ -1,0 +1,171 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Settings2Icon } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+  FieldSet,
+  FieldLegend,
+} from "@/components/ui/field"
+import { GEMINI_VOICES } from "@/data/voices"
+
+interface SpeakerSettingsDrawerProps {
+  speakerName: string
+  audioProfile: string
+  setAudioProfile: (val: string) => void
+  style: string
+  setStyle: (val: string) => void
+  pace: string
+  setPace: (val: string) => void
+  accent: string
+  setAccent: (val: string) => void
+  voice: string
+  setVoice: (val: string) => void
+}
+
+export function SpeakerSettingsDrawer({
+  speakerName,
+  audioProfile,
+  setAudioProfile,
+  style,
+  setStyle,
+  pace,
+  setPace,
+  accent,
+  setAccent,
+  voice,
+  setVoice,
+}: SpeakerSettingsDrawerProps) {
+  // Convert standard ID strings safely for semantic htmlFor/id matching
+  const inputIdPrefix = speakerName.toLowerCase().replace(/\s+/g, "-")
+
+  return (
+    <Drawer direction="right">
+      <DrawerTrigger asChild>
+        <Button variant="outline" size="icon" aria-label={`${speakerName} Settings`}>
+          <Settings2Icon />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>{speakerName} Settings</DrawerTitle>
+          <DrawerDescription>Configure the speech generation settings for {speakerName}.</DrawerDescription>
+        </DrawerHeader>
+        <div className="flex-1 overflow-y-auto px-4 pb-4">
+          <FieldGroup>
+            {/* Section 1: Audio Profile */}
+            <FieldSet>
+              <FieldLegend>Settings</FieldLegend>
+              <FieldDescription>Configure the speech generation settings for {speakerName}.</FieldDescription>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor={`${inputIdPrefix}-audio-profile`}>Audio Profile</FieldLabel>
+                  <Input
+                    id={`${inputIdPrefix}-audio-profile`}
+                    value={audioProfile}
+                    onChange={(e) => setAudioProfile(e.target.value)}
+                    placeholder="e.g., Energetic teenager, clear voice"
+                  />
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+
+            <FieldSeparator />
+
+            {/* Section 2: Style, Pace, Accent */}
+            <FieldSet>
+              <FieldLegend>Advanced Settings</FieldLegend>
+              <FieldDescription>Speech-to-speech prompting directives for {speakerName}.</FieldDescription>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor={`${inputIdPrefix}-style`}>Style</FieldLabel>
+                  <Input
+                    id={`${inputIdPrefix}-style`}
+                    value={style}
+                    onChange={(e) => setStyle(e.target.value)}
+                    placeholder="e.g., whispering, excited, gravelly"
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor={`${inputIdPrefix}-pace`}>Pace</FieldLabel>
+                  <Input
+                    id={`${inputIdPrefix}-pace`}
+                    value={pace}
+                    onChange={(e) => setPace(e.target.value)}
+                    placeholder="e.g., very fast, painfully slow"
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor={`${inputIdPrefix}-accent`}>Accent</FieldLabel>
+                  <Input
+                    id={`${inputIdPrefix}-accent`}
+                    value={accent}
+                    onChange={(e) => setAccent(e.target.value)}
+                    placeholder="e.g., British accent, heavy French drawl"
+                  />
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+
+            <FieldSeparator />
+
+            {/* Section 3: Voice Selection */}
+            <FieldSet>
+              <FieldLegend>Voice Selection</FieldLegend>
+              <FieldDescription>Select the prebuilt output voice for {speakerName}.</FieldDescription>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor={`${inputIdPrefix}-voice`}>Voice</FieldLabel>
+                  <Select value={voice} onValueChange={setVoice}>
+                    <SelectTrigger id={`${inputIdPrefix}-voice`}>
+                      <SelectValue placeholder="Select a voice" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Voices</SelectLabel>
+                        {GEMINI_VOICES.map((v) => (
+                          <SelectItem key={v.value} value={v.value}>
+                            {v.label} ({v.personality})
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+          </FieldGroup>
+        </div>
+        <DrawerFooter>
+          <DrawerClose asChild>
+            <Button variant="outline">Close</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}

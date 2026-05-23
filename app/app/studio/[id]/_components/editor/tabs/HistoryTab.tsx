@@ -33,7 +33,7 @@ import {
 import { TabsContent } from "@/components/ui/tabs"
 import { formatDistanceToNow } from "date-fns"
 import { toast } from "sonner"
-import { mockHistoryData } from "../../../../_data/history"
+import { mockHistoryData } from "@/data/history"
 
 /**
  * HistoryTab Component

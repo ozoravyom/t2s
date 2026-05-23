@@ -4,7 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Metadata } from "next"
 import { ProjectGrid } from "./_components/project-grid"
 import { CreateProjectDialog } from "./_components/create-project-dialog"
-import { mockProjects } from "./_data/projects"
+import { mockProjects } from "@/data/projects"
 
 export const metadata: Metadata = {
   title: "Studio | T2S",
